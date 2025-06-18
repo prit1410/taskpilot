@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPilot - Smart To-Do App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2ebf91;
+            --secondary-color: #8360c3;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1920x1080/?productivity') center/cover;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .screens-section {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .screen-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            list-style: none;
+            padding: 2rem;
+        }
+
+        .screen-item {
+            background: var(--bg-gradient);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Landing section styles */
+        .landing-section {
+            background: linear-gradient(135deg, #8360c3, #2ebf91);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Features section styles */
+        .features-section {
+            background: white;
+            color: #333;
+        }
+
+        /* Countdown timer styles */
+        .countdown {
+            display: flex;
+            gap: 30px;
+            margin: 3rem 0;
+            perspective: 1000px;
+        }
+
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            min-width: 120px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .countdown-box:hover {
+            transform: translateY(-10px) rotateY(10deg);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+        }
+
+        .countdown-number {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .countdown-number.ending {
+            animation: pulse 1s infinite;
+            color: #ff4757;
+        }
+
+        /* Hero image styles */
+        .hero-image-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            transform: perspective(1000px) rotateX(5deg);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-image:hover {
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .countdown {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .countdown-box {
+                min-width: 100px;
+                padding: 1.5rem;
+            }
+
+            .countdown-number {
+                font-size: 2.5rem;
+            }
+
+            .countdown-label {
+                font-size: 0.8rem;
+            }
+
+            .hero-image-container {
+                margin: 2rem auto 0;
+                padding: 0 15px;
+            }
+            
+            .hero-image {
+                border-radius: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Section -->
+    <section class="landing-section">
+        <h1>🚀 TaskPilot is Launching Soon!</h1>
+        <p>Smart To-Do App powered by AI – built with love using Flutter. Stay organized, stay focused.</p>
+
+        <!-- Countdown Timer -->
+        <div class="countdown" id="countdown">
+            <div class="countdown-box">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+
+        <!-- Hero Image -->
+        <div class="hero-image-container">
+            <img 
+                src="https://res.cloudinary.com/dszdqpahf/image/upload/v1750261444/ChatGPT_Image_Jun_18_2025_09_06_51_PM_fw5cmt.png" 
+                alt="TaskPilot App Preview" 
+                class="hero-image"
+                loading="lazy"
+            >
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <div class="container">
+        <section class="concept">
+            <h2 class="section-title">Concept Overview</h2>
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <p>A modern, AI-powered task manager app that helps users organize daily goals and get productivity suggestions in real-time. Built with Flutter UI and integrated with OpenAI for smart prioritization and task planning.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Cross-Platform</h3>
+                    <p>Sleek Flutter UI compatible with Android, iOS, and Web</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Task Management</h3>
+                    <p>Intuitive Add/Edit/Delete functionality for tasks</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Assistant</h3>
+                    <p>Smart suggestions for task prioritization</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Voice Input</h3>
+                    <p>Voice-to-Task feature for quick task creation</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Smart Reminders</h3>
+                    <p>Intelligent notifications and deadline tracking</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Themes</h3>
+                    <p>Clean light/dark mode themes</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="screens-section">
+        <div class="container">
+            <h2 class="section-title">Upcoming Screens</h2>
+            <ul class="screen-list">
+                <li class="screen-item">
+                    <h3>📱 Home Dashboard</h3>
+                    <p>Tasks overview and Calendar view</p>
+                </li>
+                <li class="screen-item">
+                    <h3>➕ Add Task</h3>
+                    <p>Title, Priority, Voice input options</p>
+                </li>
+                <li class="screen-item">
+                    <h3>🤖 AI Assistant</h3>
+                    <p>Chat interface for task suggestions</p>
+                </li>
+                <li class="screen-item">
+                    <h3>📋 Task Detail</h3>
+                    <p>Notes, deadlines, and tags</p>
+                </li>
+                <li class="screen-item">
+                    <h3>⚙️ Settings</h3>
+                    <p>Theme switch and account settings</p>
+                </li>
+                <li class="screen-item">
+                    <h3>📤 Export</h3>
+                    <p>Export tasks to CSV or text format</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="footer">© 2025 TaskPilot. All rights reserved.</div>
+
+    <script>
+        // Countdown timer script
+        const launchDate = new Date("August 1, 2025 00:00:00").getTime();
+
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const timeLeft = launchDate - now;
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+
+            // Add ending animation when time is low
+            if (days === 0) {
+                document.querySelectorAll('.countdown-number').forEach(el => el.classList.add('ending'));
+            }
+        };
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
